@@ -1,6 +1,4 @@
 import com.ionspin.kotlin.bignum.integer.BigInteger
-import kotlin.js.Math
-import kotlin.math.exp
 
 val bands = arrayOf(
     "1/2100/IMT",
@@ -100,6 +98,17 @@ fun calculateBandNumber(selectedBands: Collection<Int>): BigInteger {
         if (it < 1) throw IllegalArgumentException("Band number must be > 1")
 //        bands = bands or (BigInteger(1).shl(it - 1))
         bands = bands + BigInteger(2).pow(BigInteger(it - 1))
+    }
+
+    return bands
+}
+
+@ExperimentalUnsignedTypes
+fun calculateListFromBandNumber(bandNumber: BigInteger): List<Int> {
+    val bands = ArrayList<Int>()
+
+    bandNumber.toString(2).reversed().forEachIndexed { index, c ->
+        if (c == '1') bands.add(index + 1)
     }
 
     return bands
